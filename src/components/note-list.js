@@ -7,9 +7,6 @@ class NoteList extends HTMLElement {
   /** @type {HTMLStyleElement} */
   _style = null;
 
-  /** @type {import("../data/note").Note[]} */
-  _notes = null;
-
   constructor() {
     super();
 
@@ -38,13 +35,6 @@ class NoteList extends HTMLElement {
   }
 
   connectedCallback() {
-    this.render();
-  }
-
-  /** @param {import("../data/note").Note[]} */
-  setNotes(value) {
-    this._notes = value;
-
     this.render();
   }
 
