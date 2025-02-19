@@ -43,16 +43,16 @@ class NoteList extends HTMLElement {
     this._updateStyle();
     this._shadowRoot.appendChild(this._style);
 
-    const noteCards = notesData.map((item) => {
-      /** @type {NoteCard} */
-      const noteCard = document.createElement("note-card");
+    // const noteCards = notesData.map((item) => {
+    //   /** @type {NoteCard} */
+    //   const noteCard = document.createElement("note-card");
 
-      noteCard.setNote(item);
+    //   noteCard.setNote(item);
 
-      return noteCard;
-    });
+    //   return noteCard;
+    // });
 
-    this._shadowRoot.append(this._style, ...noteCards);
+    // this._shadowRoot.append(this._style, ...noteCards);
   }
 }
 
