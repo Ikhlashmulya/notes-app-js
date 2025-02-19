@@ -1,3 +1,6 @@
+import Notes from "../data/note.js";
+import { RENDER_EVENT } from "../util/constants.js";
+
 class NoteCard extends HTMLElement {
   /** @type {ShadowRoot} */
   _shadowRoot = null;
@@ -38,6 +41,13 @@ class NoteCard extends HTMLElement {
 
   connectedCallback() {
     this.render();
+
+    const deleteBtn = this._shadowRoot.getElementById("deleteBtn");
+    deleteBtn.addEventListener("click", () => {
+      if (confirm("anda yakin?")) {
+        Notes.delete(this._note.id);
+      }
+    });
   }
 
   render() {
@@ -48,6 +58,7 @@ class NoteCard extends HTMLElement {
       <div noteId="${this._note.id}">
         <h3>${this._note.title}</h3>
         <p>${this._note.body}</p>
+        <button id="deleteBtn">Hapus</button>
       </div> 
     `;
   }

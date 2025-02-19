@@ -1,3 +1,6 @@
+import Notes from "../data/note.js";
+import { RENDER_EVENT } from "../util/constants.js";
+
 class AddNoteForm extends HTMLElement {
   /** @type {ShadowRoot} */
   _shadowRoot = null;
@@ -57,6 +60,16 @@ class AddNoteForm extends HTMLElement {
 
   connectedCallback() {
     this.render();
+
+    const form = this._shadowRoot.querySelector("form");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const title = this._shadowRoot.getElementById("title").value;
+      const body = this._shadowRoot.getElementById("body").value;
+
+      Notes.insert({ title, body });
+    });
   }
 
   render() {
@@ -66,7 +79,7 @@ class AddNoteForm extends HTMLElement {
     this._shadowRoot.innerHTML += `
       <form>
         <label for="title">Judul</label>
-        <input type="text" name="title" id="title">
+        <input type="text" name="title" id="title" required>
         <label for="body">Isi</label>
         <textarea name="body" id="body"></textarea>
         <button type="submit">Simpan</button>

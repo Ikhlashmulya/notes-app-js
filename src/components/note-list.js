@@ -1,4 +1,6 @@
-import { notesData } from "../data/note.js";
+import Notes from "../data/note.js";
+import { RENDER_EVENT } from "../util/constants.js";
+import Utils from "../util/utils.js";
 
 class NoteList extends HTMLElement {
   /** @type {ShadowRoot} */
@@ -25,6 +27,7 @@ class NoteList extends HTMLElement {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 5px;
+        overflow: hidden;
       }
       @media screen and (max-width: 720px) {
         :host {
@@ -36,23 +39,38 @@ class NoteList extends HTMLElement {
 
   connectedCallback() {
     this.render();
+
+    document.addEventListener(RENDER_EVENT, () => {
+      this.render();
+    });
   }
 
-  render() {
+  /**
+   *
+   * @param {import("../data/note.js").Note[]} notes
+   */
+  _renderNotes(notes) {
+    const noteCards = notes.map((note) => {
+      /** @type {NoteCard} */
+      const noteCardElement = document.createElement("note-card");
+      noteCardElement.setNote(note);
+      return noteCardElement;
+    });
+
+    this._shadowRoot.append(...noteCards);
+  }
+
+  async render() {
     this._emptyContent();
     this._updateStyle();
     this._shadowRoot.appendChild(this._style);
 
-    // const noteCards = notesData.map((item) => {
-    //   /** @type {NoteCard} */
-    //   const noteCard = document.createElement("note-card");
+    Utils.showLoading(document.querySelector("#loading"));
 
-    //   noteCard.setNote(item);
+    const notes = await Notes.getAll();
+    this._renderNotes(notes);
 
-    //   return noteCard;
-    // });
-
-    // this._shadowRoot.append(this._style, ...noteCards);
+    Utils.hideLoading(document.querySelector("#loading"));
   }
 }
 

@@ -1,0 +1,1 @@
+export const RENDER_EVENT = 'render-notes';
